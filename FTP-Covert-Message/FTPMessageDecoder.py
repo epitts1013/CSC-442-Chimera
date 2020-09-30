@@ -1,5 +1,55 @@
 from ftplib import FTP
+from textwrap import wrap
 
+### METHODS ###
+# take in the list of files
+def formatFileList(fileList, sevenBit):
+    formattedFileList = []
+
+    # if using seven rightmost bits of file permissions
+    if (sevenBit):
+        # loop through file list to extract file permissions from each string in fileList
+        for file in fileList:
+            if (file[:3] == "---"):
+                formattedFileList.append(file[3:10])
+    else:
+        pass
+
+    return formattedFileList
+
+# decodes message encoded in file permissions
+def convertToBitString(filePermissions):
+    textString = "".join(filePermissions)
+    bits = []
+
+    for char in textString:
+        if (char == "-"):
+            bits.append("0")
+        else:
+            bits.append("1")
+
+    return "".join(bits)
+
+def binaryConvert(content, length):
+    text = ""
+
+    if (len(content) % length) == 0: 
+
+        wrapped_content = wrap(content, length)
+
+        # print(wrapped_content)
+
+
+        for character in wrapped_content:
+            int_content = int(character, 2)
+            text += chr(int_content)
+
+        print("=============================================")
+        print("Solution : " + text)
+        print("=============================================")
+
+### MAIN ###
+### FTP Connect Code from Dr. Timofeyev ###
 # FTP server details
 IP = "138.47.99.5"
 PORT = 21
@@ -22,6 +72,7 @@ ftp.dir(files.append)
 # exit the FTP server
 ftp.quit()
 
+<<<<<<< HEAD
 # display the folder contents
 for f in files:
 	print(f)
@@ -43,3 +94,14 @@ def tenBitDecoder(files):
 	for i in range(0,len(permissions),7):
 	        msg += chr(int(permissions[i:i+7],2))
 	print(msg)
+=======
+# for file in files:
+#     print(file)
+
+# set code to be executed based on whether we are looking in the /7/ directory
+if (FOLDER == "/7/"):
+    bitString = convertToBitString(formatFileList(files, True))
+    binaryConvert(bitString, 7)
+elif (FOLDER == "/10/"):
+    pass
+>>>>>>> 82e8ac5f81180a0515c7ec7135c0ef977a57ea47
