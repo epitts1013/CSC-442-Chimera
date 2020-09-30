@@ -2,7 +2,7 @@ from ftplib import FTP
 from textwrap import wrap
 
 ### METHODS ###
-# take in the list of files
+# take in the list of files and output 
 def formatFileList(fileList, sevenBit):
     formattedFileList = []
 
@@ -72,12 +72,8 @@ ftp.dir(files.append)
 # exit the FTP server
 ftp.quit()
 
-# for file in files:
-#     print(file)
-
 # set code to be executed based on whether we are looking in the /7/ directory
 if (FOLDER == "/7/"):
-    bitString = convertToBitString(formatFileList(files, True))
-    binaryConvert(bitString, 7)
+    binaryConvert(convertToBitString(formatFileList(files, True)), 7)
 elif (FOLDER == "/10/"):
     pass
