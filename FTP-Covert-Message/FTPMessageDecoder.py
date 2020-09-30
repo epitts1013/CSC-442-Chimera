@@ -72,10 +72,6 @@ ftp.dir(files.append)
 # exit the FTP server
 ftp.quit()
 
-# display the folder contents
-for f in files:
-	print(f)
-
 def tenBitDecoder(files):
 	permissions = ""
 	for f in files:
