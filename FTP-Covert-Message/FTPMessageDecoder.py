@@ -1,6 +1,8 @@
 from ftplib import FTP
+from textwrap import wrap
 
 ### METHODS ###
+# take in the list of files
 def formatFileList(fileList, sevenBit):
     formattedFileList = []
 
@@ -27,6 +29,24 @@ def convertToBitString(filePermissions):
             bits.append("1")
 
     return "".join(bits)
+
+def binaryConvert(content, length):
+    text = ""
+
+    if (len(content) % length) == 0: 
+
+        wrapped_content = wrap(content, length)
+
+        # print(wrapped_content)
+
+
+        for character in wrapped_content:
+            int_content = int(character, 2)
+            text += chr(int_content)
+
+        print("=============================================")
+        print("Solution : " + text)
+        print("=============================================")
 
 ### MAIN ###
 ### FTP Connect Code from Dr. Timofeyev ###
@@ -58,6 +78,6 @@ ftp.quit()
 # set code to be executed based on whether we are looking in the /7/ directory
 if (FOLDER == "/7/"):
     bitString = convertToBitString(formatFileList(files, True))
-    print(bitString)
+    binaryConvert(bitString, 7)
 elif (FOLDER == "/10/"):
     pass
