@@ -12,7 +12,6 @@ METHOD = 7
 FOLDER = "/" + str(METHOD) + "/"
 USE_PASSIVE = True # set to False if the connection times out
 
-
 # connect and login to the FTP server
 ftp = FTP()
 ftp.connect(IP, PORT)
@@ -88,7 +87,7 @@ def BitDecoder(files, length):
 	msg = ""
 	for i in range(0,len(permissions),7):
 	        msg += chr(int(permissions[i:i+7],2))
-	print(msg)
+	return(msg)
 
 print(BitDecoder(files, METHOD))
 
