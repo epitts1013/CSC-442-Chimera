@@ -1,14 +1,12 @@
 from ftplib import FTP
 from textwrap import wrap
 
-### MAIN ###
-### FTP Connect Code from Dr. Timofeyev ###
 # FTP server details
 IP = "138.47.99.5"
 PORT = 21
 USER = "anonymous"
 PASSWORD = ""
-METHOD = 10
+METHOD = 7
 FOLDER = "/" + str(METHOD) + "/"
 USE_PASSIVE = True # set to False if the connection times out
 
@@ -27,37 +25,9 @@ ftp.dir(files.append)
 ftp.quit()
 
 ### METHODS ###
-# take in the list of files and output 
-def formatFileList(fileList, length):
-    formattedFileList = []
 
-    # if using seven rightmost bits of file permissions
-    if (length == 7):
-        # loop through file list to extract file permissions from each string in fileList
-        for file in fileList:
-            if (file[:3] == "---"):
-                formattedFileList.append(file[3:10])
-    else:
-        for file in fileList:
-            formattedFileList.append(file[:10])
-
-    return formattedFileList
-
-# decodes message encoded in file permissions
-def convertToBitString(filePermissions):
-    textString = "".join(filePermissions)
-    bits = []
-
-    for char in textString:
-        if (char == "-"):
-            bits.append("0")
-        else:
-            bits.append("1")
-
-    return "".join(bits)
-
-
-def binaryConvert(content, length):
+# binary to ascii
+def binaryConvert(content, length = 7):
     text = ""
 
     if (len(content) % length) == 0: 
@@ -70,6 +40,43 @@ def binaryConvert(content, length):
 
         return (text)
 
-# set code to be executed based on whether we are looking in the /7/ directory
-print(binaryConvert(convertToBitString(formatFileList(files, METHOD)), 7))
+# decodes message encoded in file permissions
+def convertToBitString(filePermissions):
+    textString = "".join(filePermissions)
+    bits = []
+
+    # Replace each dash with a zero, anything else is replaced by a one
+    for char in textString:
+        if (char == "-"):
+            bits.append("0")
+        else:
+            bits.append("1")
+
+    return "".join(bits)
+
+# take in the list of files and output 
+def formatFileList(fileList, length):
+    formattedFileList = []
+
+    # if using seven rightmost bits of file permissions
+    if (length == 7):
+        # loop through file list to extract file permissions from each string in fileList
+        for file in fileList:
+
+            # Ignoring files with noise in the first three characters
+            if (file[:3] == "---"):
+                formattedFileList.append(file[3:10])
+
+    elif(length == 10):
+        # This is currently checking for 10bits
+        for file in fileList:
+            formattedFileList.append(file[:10])
+
+    else: 
+        pass
+    
+    return formattedFileList
+
+# set code to be executed based on the defined directory
+print(binaryConvert(convertToBitString(formatFileList(files, METHOD))))
 
