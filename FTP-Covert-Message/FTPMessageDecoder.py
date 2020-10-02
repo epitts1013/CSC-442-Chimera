@@ -30,15 +30,16 @@ ftp.quit()
 def binaryConvert(content, length = 7):
     text = ""
 
-    if (len(content) % length) == 0: 
+    #if (len(content) % length) == 0: 
+    content = content[:(len(content) - (len(content) % length))]
 
-        wrapped_content = wrap(content, length)
+    wrapped_content = wrap(content, length)
 
-        for character in wrapped_content:
-            int_content = int(character, 2)
-            text += chr(int_content)
+    for character in wrapped_content:
+        int_content = int(character, 2)
+        text += chr(int_content)
 
-        return (text)
+    return (text)
 
 # decodes message encoded in file permissions
 def convertToBitString(filePermissions):
