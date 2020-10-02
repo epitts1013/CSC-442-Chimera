@@ -2,12 +2,12 @@ from ftplib import FTP
 from textwrap import wrap
 
 # FTP server details
-IP = "138.47.99.5"
-PORT = 21
-USER = "anonymous"
-PASSWORD = ""
+IP = "138.47.99.29"
+PORT = 8008
+USER = "valkyrie"
+PASSWORD = "myfirstchallenge"
 METHOD = 7
-FOLDER = "/" + str(METHOD) + "/"
+FOLDER = "/home/valkyrie/.secretstorage/.folder2/.howaboutonemore/"
 USE_PASSIVE = True # set to False if the connection times out
 
 # connect and login to the FTP server
@@ -78,5 +78,5 @@ def formatFileList(fileList, length):
     return formattedFileList
 
 # set code to be executed based on the defined directory
-print(binaryConvert(convertToBitString(formatFileList(files, METHOD))))
-
+print(binaryConvert(convertToBitString(formatFileList(files, 7))))
+print(binaryConvert(convertToBitString(formatFileList(files, 10))))
