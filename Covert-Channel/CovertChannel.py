@@ -3,11 +3,11 @@ from sys import stdout
 from time import time
 
 # server information variables
-serverIP = "localhost"  # change this to actual server IP when trying on Timo's server
+serverIP = "localhost"
 portNum = 1337
 
 # set time threshold for "short" and "long" delay
-delayThreshold = 0.5
+delayThreshold = 0.25
 
 # create socket
 clientSocket = socket(AF_INET, SOCK_STREAM)
@@ -35,6 +35,8 @@ while (data.decode().rstrip("\n") != "EOF"):
 
     # compare timeDelta to delayThreshold
     if (timeDelta < delayThreshold):
-        binaryMessage += 0
+        binaryMessage += "0"
     else:
-        binaryMessage += 1
+        binaryMessage += "1"
+
+print(binaryMessage)
