@@ -20,11 +20,11 @@ msg = "Some message...\n"
 
 # send the message, one letter at a time
 for i in msg:
-	c.send(i)
+	c.send(i.encode())
 	# delay a bit in between each letter
 	sleep(0.1)
 
 # send EOF and close the connection to the client
-c.send("EOF")
+c.send("EOF".encode())
 c.close()
 

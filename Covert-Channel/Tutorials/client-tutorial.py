@@ -17,9 +17,9 @@ s.connect((ip, port))
 
 # receive data until EOF
 data = s.recv(4096)
-while (data.rstrip("\n") != "EOF"):
+while (data.decode().rstrip("\n") != "EOF"):
 	# output the data
-	stdout.write(data)
+	stdout.write(data.decode())
 	stdout.flush()
 	# start the "timer", get more data, and end the "timer"
 	t0 = time()
