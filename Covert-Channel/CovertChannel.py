@@ -1,4 +1,5 @@
 import socket, os
+from socket import *
 from sys import stdout
 from time import time
 import sys
@@ -28,9 +29,9 @@ def separate(midpoint,d):
 	#else:
 	#	return "1"
 	if(d < midpoint):
-		return '1'
-	else:
 		return '0'
+	else:
+		return '1'
 
 # Converts a bitstring to a utf string
 def binary_convert(content, length = 7):
@@ -63,7 +64,7 @@ port = 31337
 clientSocket = socket(AF_INET, SOCK_STREAM)
 
 # establish connection to server
-clientSocket.connect((serverIP, portNum))
+clientSocket.connect((ip, port))
 
 # receive initial data packet from server
 data = clientSocket.recv(4096)
@@ -72,25 +73,25 @@ data = clientSocket.recv(4096)
 deltas = []
 
 # receive data until EOF
-data = s.recv(4096).decode('UTF-8')
+data = clientSocket.recv(4096).decode('UTF-8')
+stdout.write(data)
 while (data.rstrip("\n") != "EOF"):
 	# output the data
-	#stdout.write(data)
-	#stdout.flush()
+	stdout.write(data)
+	stdout.flush()
 	# start the "timer", get more data, and end the "timer"
 	t0 = time()
-	data = s.recv(4096).decode('UTF-8')
+	data = clientSocket.recv(4096).decode('UTF-8')
 	t1 = time()
 	# calculate the time delta (and output if debugging)
 	delta = round(t1 - t0, 3)
-	if (DEBUG):
-		stdout.write(" {}\n".format(delta))
+	#stdout.write(" {}\n".format(delta))
         # Subtracts ping to server from the current delta
-		deltas.append(delta-os.system("ping -c 1 138.47.98.190"))
-		stdout.flush()
+	deltas.append(delta)#-os.system("ping -c 1 138.47.98.190")
+	stdout.flush()
 
 # close the connection to the server
-s.close()
+clientSocket.close()
 # Plots the delta values from all recieved characters into a 1-D scatter plot
 d_plot(deltas)
 print("Midpoint: ",get_midpoint(deltas))
