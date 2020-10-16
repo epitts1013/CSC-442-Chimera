@@ -1,7 +1,10 @@
+#Solution : For client at IP 138.47.�47.157 and at time �`d`Zb`Zbl@bbtfnt`dX@���@������@������@����
+#For client at Ip 138.47.147.157 and at time 2020-10-16 11:49:02, the unique secret word can be obtained by performing a Vigenere cipher of the word "ecczrcoqmyfggj" with the key "coronavirus"
 from socket import socket, AF_INET, SOCK_STREAM
 from sys import stdout
 from time import time
 from textwrap import wrap
+import os
 
 DEBUG_MODE = True
 
@@ -46,10 +49,10 @@ try:
         startTime = time()
         data = clientSocket.recv(4096)
         endTime = time()
-        timeDeltas.append(endTime - startTime)
+        timeDeltas.append((endTime - startTime)-os.system("ping 138.47.99.29"))
 except KeyboardInterrupt:
     if (DEBUG_MODE):
-        orderedDeltas = timeDeltas.copy()
+        orderedDeltas = timeDeltas[:]
         orderedDeltas.sort()
         for delta in orderedDeltas:
             print(round(delta, 3))
