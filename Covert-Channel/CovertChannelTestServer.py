@@ -22,7 +22,7 @@ msg = "Some message...\n"
 covertMessage = "Testing..."
 binaryMessage = ""
 for char in covertMessage:
-    binaryMessage += bin(ord(char))[2:].zfill(7)
+    binaryMessage += bin(ord(char))[2:].zfill(8)
 
 print(binaryMessage)
 

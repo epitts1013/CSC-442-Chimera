@@ -3,6 +3,7 @@ from sys import stdout
 from time import time
 from textwrap import wrap
 
+# convert binary string to equivalent ascii text
 def binaryConvert(content, length):
     text = ""
 
@@ -13,13 +14,11 @@ def binaryConvert(content, length):
         int_content = int(character, 2)
         text += chr(int_content)
 
-    print("=============================================")
     print("Solution : " + text)
-    print("=============================================")
 
 # server information variables
-serverIP = "localhost"
-portNum = 1337
+serverIP = "138.47.98.190"
+portNum = 31337
 
 # set time threshold for "short" and "long" delay
 delayThreshold = 0.1
@@ -44,11 +43,12 @@ while (data.decode().rstrip("\n") != "EOF"):
     startTime = time()
     data = clientSocket.recv(4096)
     endTime = time()
-    timeDeltas.append(endTime-startTime)
+    timeDeltas.append(endTime - startTime)
 
-
-# for delta in timeDeltas:
-#     print(round(delta, 3))
+orderedDeltas = timeDeltas.copy()
+orderedDeltas.sort()
+for delta in orderedDeltas:
+    print(round(delta, 3))
 
 binaryMessage = ""
 for delta in timeDeltas:
@@ -63,4 +63,4 @@ for delta in timeDeltas:
 
 print(binaryMessage)
 
-binaryConvert(binaryMessage, 7)
+binaryConvert(binaryMessage, 8)
