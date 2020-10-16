@@ -5,6 +5,31 @@ from textwrap import wrap
 
 DEBUG_MODE = True
 
+
+def decode(text):
+    deltTot = 0
+    binaryMessage = ""
+    for delta in timeDeltas[10:-10]:
+        deltTot += delta
+        # calculate time between messages
+        delta = round(delta, 3)
+
+        # compare timeDelta to delayThreshold
+        #if (delta < delayThreshold):
+        #    binaryMessage += "0"
+        #else:
+        #    binaryMessage += "1"
+    deltAvg = deltTot/len(timeDeltas[10:-10])
+    for delta in timeDeltas:
+        if (delta < deltAvg):
+            binaryMessage += "0"
+        else:
+            binaryMessage += "1"
+    print(binaryMessage)
+
+    binaryConvert(binaryMessage, 8)
+
+
 # convert binary string to equivalent ascii text
 def binaryConvert(content, length):
     text = ""
@@ -19,11 +44,11 @@ def binaryConvert(content, length):
     print("Solution : " + text)
 
 # server information variables
-serverIP = "138.47.98.190"
-portNum = 31337
+serverIP = "138.47.99.29"
+portNum = 33333
 
 # set time threshold for "short" and "long" delay
-delayThreshold = 0.1
+#delayThreshold = 0.1
 
 # create socket
 clientSocket = socket(AF_INET, SOCK_STREAM)
@@ -46,20 +71,28 @@ while (data.decode().rstrip("\n") != "EOF"):
     data = clientSocket.recv(4096)
     endTime = time()
     timeDeltas.append(endTime - startTime)
+    if(len(timeDeltas)%700 == 0):
+        decode(timeDeltas)
 
-if (DEBUG_MODE):
-    orderedDeltas = timeDeltas.copy()
-    orderedDeltas.sort()
-    for delta in orderedDeltas:
-        print(round(delta, 3))
-
+#if (DEBUG_MODE):
+#    orderedDeltas = timeDeltas.copy()
+#    orderedDeltas.sort()
+#    for delta in orderedDeltas:
+deltTot = 0
 binaryMessage = ""
-for delta in timeDeltas:
+for delta in timeDeltas[10:-10]:
+    deltTot += delta
     # calculate time between messages
     delta = round(delta, 3)
 
     # compare timeDelta to delayThreshold
-    if (delta < delayThreshold):
+    #if (delta < delayThreshold):
+    #    binaryMessage += "0"
+    #else:
+    #    binaryMessage += "1"
+deltAvg = deltTot/len(timeDeltas[10:-10])
+for delta in timeDeltas:
+    if (delta < deltAvg):
         binaryMessage += "0"
     else:
         binaryMessage += "1"
