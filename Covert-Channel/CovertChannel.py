@@ -1,5 +1,5 @@
 #Solution : For client at IP 138.47.�47.157 and at time �`d`Zb`Zbl@bbtfnt`dX@���@������@������@����
-
+#For client at Ip 138.47.147.157 and at time 2020-10-16 11:49:02, the unique secret word can be obtained by performing a Vigenere cipher of the word "ecczrcoqmyfggj" with the key "coronavirus"
 from socket import socket, AF_INET, SOCK_STREAM
 from sys import stdout
 from time import time
