@@ -34,24 +34,25 @@ clientSocket.connect((serverIP, portNum))
 # receive initial data packet from server
 data = clientSocket.recv(4096)
 
-# continue receiving data until recieving an EOF message
-timeDeltas = []
-while (data.decode().rstrip("\n") != "EOF"):
-    # output data to stdout
-    stdout.write(data.decode())
-    stdout.flush()
+try:
+    # continue receiving data until recieving an EOF message
+    timeDeltas = []
+    while (data.decode().rstrip("\n") != "EOF"):
+        # output data to stdout
+        stdout.write(data.decode())
+        stdout.flush()
 
-    # get time until next message recieved
-    startTime = time()
-    data = clientSocket.recv(4096)
-    endTime = time()
-    timeDeltas.append(endTime - startTime)
-
-if (DEBUG_MODE):
-    orderedDeltas = timeDeltas.copy()
-    orderedDeltas.sort()
-    for delta in orderedDeltas:
-        print(round(delta, 3))
+        # get time until next message recieved
+        startTime = time()
+        data = clientSocket.recv(4096)
+        endTime = time()
+        timeDeltas.append(endTime - startTime)
+except KeyboardInterrupt:
+    if (DEBUG_MODE):
+        orderedDeltas = timeDeltas.copy()
+        orderedDeltas.sort()
+        for delta in orderedDeltas:
+            print(round(delta, 3))
 
 binaryMessage = ""
 for delta in timeDeltas:
