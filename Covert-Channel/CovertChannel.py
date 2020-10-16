@@ -19,11 +19,11 @@ def binaryConvert(content, length):
     print("Solution : " + text)
 
 # server information variables
-serverIP = "138.47.98.190"
-portNum = 31337
+serverIP = "138.47.99.29"
+portNum = 33333
 
 # set time threshold for "short" and "long" delay
-delayThreshold = 0.1
+delayThreshold = 0.37
 
 # create socket
 clientSocket = socket(AF_INET, SOCK_STREAM)
