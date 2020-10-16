@@ -4,6 +4,7 @@ from socket import socket, AF_INET, SOCK_STREAM
 from sys import stdout
 from time import time
 from textwrap import wrap
+import os
 
 DEBUG_MODE = True
 
@@ -21,8 +22,8 @@ def binaryConvert(content, length):
     print("Solution : " + text)
 
 # server information variables
-serverIP = "138.47.98.190"
-portNum = 31337
+serverIP = "138.47.99.29"
+portNum = 33333
 
 # set time threshold for "short" and "long" delay
 delayThreshold = 0.1
@@ -48,10 +49,10 @@ try:
         startTime = time()
         data = clientSocket.recv(4096)
         endTime = time()
-        timeDeltas.append(endTime - startTime)
+        timeDeltas.append((endTime - startTime)-os.system("ping 138.47.99.29"))
 except KeyboardInterrupt:
     if (DEBUG_MODE):
-        orderedDeltas = timeDeltas.copy()
+        orderedDeltas = timeDeltas[:]
         orderedDeltas.sort()
         for delta in orderedDeltas:
             print(round(delta, 3))
