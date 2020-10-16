@@ -3,6 +3,8 @@ from sys import stdout
 from time import time
 from textwrap import wrap
 
+DEBUG_MODE = True
+
 # convert binary string to equivalent ascii text
 def binaryConvert(content, length):
     text = ""
@@ -45,10 +47,11 @@ while (data.decode().rstrip("\n") != "EOF"):
     endTime = time()
     timeDeltas.append(endTime - startTime)
 
-orderedDeltas = timeDeltas.copy()
-orderedDeltas.sort()
-for delta in orderedDeltas:
-    print(round(delta, 3))
+if (DEBUG_MODE):
+    orderedDeltas = timeDeltas.copy()
+    orderedDeltas.sort()
+    for delta in orderedDeltas:
+        print(round(delta, 3))
 
 binaryMessage = ""
 for delta in timeDeltas:
