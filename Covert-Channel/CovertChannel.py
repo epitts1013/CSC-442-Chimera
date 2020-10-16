@@ -1,3 +1,5 @@
+#Solution : For client at IP 138.47.�47.157 and at time �`d`Zb`Zbl@bbtfnt`dX@���@������@������@����
+
 from socket import socket, AF_INET, SOCK_STREAM
 from sys import stdout
 from time import time
