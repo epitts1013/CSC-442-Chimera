@@ -4,6 +4,8 @@ from sys import stdin, stdout
 from random import uniform
 from time import sleep, time
 
+DEBUG = False
+
 keysPressed = []
 holdTimings = []
 intervalTimings = []
@@ -42,18 +44,25 @@ with Listener(on_press=on_press, on_release=on_release) as listener:
 
 intervalTimings = intervalTimings[1:]
 
-print(keysPressed)
-print(holdTimings)
-print(intervalTimings)
+if (DEBUG):
+    print(keysPressed)
+    print(holdTimings)
+    print(intervalTimings)
+
+input("Press enter to continue")
+for i in range(1, 6):
+    print("Typing in {} seconds...".format(6-i))
+    sleep(1)
 
 # make keypresses
 keyboard = Controller()
 
 string = "".join(keysPressed)
 
-for ch in string:
-    keyboard.press(ch)
-    sleep(uniform(0.02, 0.2))
-    keyboard.release(ch)
+for i in range(len(string)):
+    keyboard.press(string[i])
+    sleep(holdTimings[i])
+    keyboard.release(string[i])
+    sleep(intervalTimings[i])
 
 print()
