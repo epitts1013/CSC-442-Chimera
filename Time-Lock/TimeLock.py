@@ -1,5 +1,5 @@
 # IMPORTS
-import datetime
+from datetime import datetime
 import re
 from math import floor
 from sys import stdin
@@ -14,15 +14,25 @@ stdinEpoch = ""
 stdinEpoch = stdin.read()
 es = stdinEpoch.split(" ")
 
-epochTime = datetime.datetime(int(es[0]), int(es[1]), int(es[2]), int(es[3]), int(es[4]), int(es[5]))
-currentTime = datetime.datetime.now()
+epochTime = datetime(int(es[0]), int(es[1]), int(es[2]), int(es[3]), int(es[4]), int(es[5]))
+currentTime = datetime.now()
 
 # debug
-epochTime = datetime.datetime(1999, 12, 31, 23, 59, 59)
-currentTime = datetime.datetime(2013, 5, 6, 7, 43, 25)
+epochTime = datetime(1974, 6, 1, 8, 57, 23)
+currentTime = datetime(2017, 4, 26, 15, 14, 30)
+
+# check if date is in DST
+epochDST = False
+currentDST = False
+if (epochTime.month >= 3 and epochTime.month < 9):
+    epochDST = True
+if (currentTime.month >= 3 and currentTime.month < 9):
+    currentDST = True
 
 elapsedTime = (currentTime - epochTime).total_seconds()
 elapsedTime = floor(elapsedTime - (elapsedTime % 60))
+if ((epochDST and not currentDST) or (currentDST and not epochDST)):
+    elapsedTime -= 3600
 print(elapsedTime)
 
 # compute MD5 hash
