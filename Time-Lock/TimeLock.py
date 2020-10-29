@@ -1,5 +1,5 @@
 # IMPORTS
-import time
+import datetime
 import re
 from math import floor
 from sys import stdin
@@ -12,28 +12,17 @@ stdinEpoch = ""
 # MAIN
 # get epoch from stdin
 stdinEpoch = stdin.read()
+es = stdinEpoch.split(" ")
 
-# get current time rounded to last minute
-currentTime = time.time() - (time.time() % 60)
+epochTime = datetime.datetime(int(es[0]), int(es[1]), int(es[2]), int(es[3]), int(es[4]), int(es[5]))
+currentTime = datetime.datetime.now()
 
-# get time of inputted epoch
-epochTime = time.mktime(time.strptime(stdinEpoch, "%Y %m %d %H %M %S"))
+# debug
+epochTime = datetime.datetime(2017, 1, 1, 0, 0, 0)
+currentTime = datetime.datetime(2017, 3, 23, 18, 2, 6)
 
-# debug mode allows manual time entry
-if (DEBUG):
-    stdinEpoch = "1999 12 31 23 59 59"
-    currentTime = "2017 04 23 18 02 30"
-    currentTime = time.mktime(time.strptime(currentTime, "%Y %m %d %H %M %S"))
-    print(currentTime)
-    currentTime = currentTime - (currentTime % 60)
-    print(currentTime)
-    epochTime = time.mktime(time.strptime(stdinEpoch, "%Y %m %d %H %M %S"))
-    print(epochTime)
-
-# get time elapsed since given epoch
-elapsedTime = currentTime - epochTime
-
-print(floor(elapsedTime))
+elapsedTime = (currentTime - epochTime).total_seconds()
+elapsedTime = elapsedTime - (elapsedTime % 60)
 
 # compute MD5 hash
 hashedTime = md5(str(floor(elapsedTime)).encode())
