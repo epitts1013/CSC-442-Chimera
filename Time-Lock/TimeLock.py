@@ -15,14 +15,16 @@ stdinEpoch = stdin.read()
 # get current time rounded to last minute
 currentTime = time.time() - (time.time() % 60)
 
-# debug mode allows manual time entry
-if (DEBUG):
-    stdinEpoch = "2017 01 01 00 00 00"
-    currentTime = time.mktime(time.strptime("2017 03 23 18 02 06", "%Y %m %d %H %M %S"))
-    currentTime = currentTime - (currentTime % 60)
-
 # get time of inputted epoch
 epochTime = time.mktime(time.strptime(stdinEpoch, "%Y %m %d %H %M %S"))
+
+# debug mode allows manual time entry
+if (DEBUG):
+    stdinEpoch = "1999 12 31 23 59 59"
+    currentTime = "2013 05 06 07 43 25"
+    currentTime = time.mktime(time.strptime(currentTime, "%Y %m %d %H %M %S"))
+    currentTime = currentTime - (currentTime % 60)
+    epochTime = time.mktime(time.strptime(stdinEpoch, "%Y %m %d %H %M %S"))
 
 # get time elapsed since given epoch
 elapsedTime = currentTime - epochTime
@@ -30,6 +32,8 @@ elapsedTime = currentTime - epochTime
 # compute MD5 hash
 hashedTime = md5(str(elapsedTime).encode())
 print(hashedTime.hexdigest())
+
+### EVERYTHING BELOW HERE WORKS ###
 
 # get code from hashed time
 code = ""
