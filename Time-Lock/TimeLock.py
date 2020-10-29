@@ -18,8 +18,8 @@ epochTime = datetime(int(es[0]), int(es[1]), int(es[2]), int(es[3]), int(es[4]),
 currentTime = datetime.now()
 
 # debug
-#epochTime = datetime(1974, 6, 1, 8, 57, 23)
-currentTime = datetime(2017, 4, 26, 15, 14, 30)
+epochTime = datetime(2017, 1, 1, 0, 0, 0)
+currentTime = datetime(2017, 3, 23, 18, 2, 6)
 
 # check if date is in DST
 epochDST = False
@@ -33,12 +33,10 @@ elapsedTime = (currentTime - epochTime).total_seconds()
 elapsedTime = floor(elapsedTime - (elapsedTime % 60))
 if ((epochDST and not currentDST) or (currentDST and not epochDST)):
     elapsedTime -= 3600
-print(elapsedTime)
 
 # compute MD5 hash
 hashedTime = md5(str(elapsedTime).encode())
 hashedTime = md5(hashedTime.hexdigest().encode())
-print(hashedTime.hexdigest())
 
 # get code from hashed time
 code = ""
