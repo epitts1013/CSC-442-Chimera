@@ -18,8 +18,8 @@ epochTime = datetime.datetime(int(es[0]), int(es[1]), int(es[2]), int(es[3]), in
 currentTime = datetime.datetime.now()
 
 # debug
-epochTime = datetime.datetime(2017, 1, 1, 0, 0, 0)
-currentTime = datetime.datetime(2017, 3, 23, 18, 2, 6)
+epochTime = datetime.datetime(1999, 12, 31, 23, 59, 59)
+currentTime = datetime.datetime(2013, 5, 6, 7, 43, 25)
 
 elapsedTime = (currentTime - epochTime).total_seconds()
 elapsedTime = floor(elapsedTime - (elapsedTime % 60))
