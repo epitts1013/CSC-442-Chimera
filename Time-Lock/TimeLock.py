@@ -24,9 +24,9 @@ currentTime = datetime(2017, 4, 26, 15, 14, 30)
 # check if date is in DST
 epochDST = False
 currentDST = False
-if (epochTime.month >= 3 and epochTime.month < 9):
+if (epochTime.month >= 3 and epochTime.month < 11):
     epochDST = True
-if (currentTime.month >= 3 and currentTime.month < 9):
+if (currentTime.month >= 3 and currentTime.month < 11):
     currentDST = True
 
 elapsedTime = (currentTime - epochTime).total_seconds()
@@ -39,8 +39,6 @@ print(elapsedTime)
 hashedTime = md5(str(elapsedTime).encode())
 hashedTime = md5(hashedTime.hexdigest().encode())
 print(hashedTime.hexdigest())
-
-### EVERYTHING BELOW HERE WORKS ###
 
 # get code from hashed time
 code = ""
