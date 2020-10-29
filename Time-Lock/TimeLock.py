@@ -36,9 +36,8 @@ elapsedTime = currentTime - epochTime
 print(floor(elapsedTime))
 
 # compute MD5 hash
-hashedTime = md5(bytearray(floor(elapsedTime)))
-hashedTime = hashedTime.digest()
-hashedTime = md5(hashedTime)
+hashedTime = md5(str(elapsedTime).encode())
+hashedTime = md5(hashedTime.hexdigest().encode())
 print(hashedTime.hexdigest())
 
 ### EVERYTHING BELOW HERE WORKS ###
