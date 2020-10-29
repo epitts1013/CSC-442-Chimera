@@ -22,7 +22,7 @@ epochTime = datetime.datetime(2017, 1, 1, 0, 0, 0)
 currentTime = datetime.datetime(2017, 3, 23, 18, 2, 6)
 
 elapsedTime = (currentTime - epochTime).total_seconds()
-elapsedTime = elapsedTime - (elapsedTime % 60)
+elapsedTime = floor(elapsedTime - (elapsedTime % 60))
 
 # compute MD5 hash
 hashedTime = md5(str(floor(elapsedTime)).encode())
