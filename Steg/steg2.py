@@ -1,4 +1,5 @@
-import sys
+import sys, math
+
 
 def parse_args():
     args = sys.argv[1:]
@@ -8,24 +9,27 @@ def parse_args():
     global interval
     global wrapper_file
     global hidden_file
+    global argvs
     for arg in args:
         arg_h = arg[0:2]
-        if(arg_h == '-s'):
+        if (arg_h == '-s'):
             store_mode = True
-        elif(arg_h == '-r'):
+        elif (arg_h == '-r'):
             store_mode = False
-        elif(arg_h == '-b'):
+        elif (arg_h == '-b'):
             bit_mode = True
-        elif(arg_h == '-B'):
+        elif (arg_h == '-B'):
             bit_mode = False
-        elif(arg_h == '-o'):
+        elif (arg_h == '-o'):
             offset = int(arg[2:])
-        elif(arg_h == '-i'):
+        elif (arg_h == '-i'):
             interval = int(arg[2:])
-        elif(arg_h == '-w'):
-            wrapper_file = bytearray(open(arg[2:],'rb').read())
-        elif(arg_h == '-h'):
-            hidden_file = bytearray(open(arg[2:],'rb').read())
+        elif (arg_h == '-w'):
+            wrapper_file = bytearray(open(arg[2:], 'rb').read())
+            argvs["wrapper"] = arg[2:]
+        elif (arg_h == '-h'):
+            hidden_file = bytearray(open(arg[2:], 'rb').read())
+
 
 def byte_optimal_interval():
     global sentinel
@@ -35,54 +39,57 @@ def byte_optimal_interval():
     global interval
     global wrapper_file
     global hidden_file
-    return(int((len(wrapper_file)-offset)/(len(hidden_file)-sentinel)))
-    
+    # return (int((len(wrapper_file) - offset) / (len(hidden_file) - sentinel)))
+    num = len(wrapper_file) - offset
+    den = len(hidden_file) + len(sentinel)
+    return (math.floor(num / den))
+
+
 def byte_store():
     global sentinel
-    global store_mode
-    global bit_mode
     global offset
-    global interval
     global wrapper_file
     global hidden_file
 
+    # opt_interval = byte_optimal_interval()
+    j = 0
     for i in range(len(hidden_file)):
         wrapper_file[offset] = hidden_file[i]
         offset += interval
-        
+        j=i
+
     for i in range(len(sentinel)):
         wrapper_file[offset] = sentinel[i]
         offset += interval
+        j=i
+    out = open(argvs["wrapper"], 'rb+')
+    out.write(wrapper_file)
+
 
 def byte_extract():
     global sentinel
-    global store_mode
-    global bit_mode
     global offset
     global interval
     global wrapper_file
-    global hidden_file
-    
+
     s_matches = 0
     s_len = len(sentinel)
-    out = bytearray()
-    
-    while(offset < len(wrapper_file)):
-        byte = wrapper_file[offset]
-        if(byte == sentinel[s_matches]):
+    out = []
+    for i in range(offset, len(wrapper_file), interval):
+
+        byte = wrapper_file[i]
+        if (byte == sentinel[s_matches]):
+            out.append(byte)
             s_matches += 1
-            if(s_matches >= s_len):
-                #for byte in sentinel:
-                #    out.append(byte)
-                #print(out)
-                return out
-                break
+            if (s_matches == s_len):
+                out = out[:-len(sentinel)]
+                return bytearray(out)
         else:
             s_matches = 0
             out.append(byte)
-            
-        offset += interval
-    return(None)
+
+    raise Exception("Sentinel not found.")
+
 
 def bit_extract():
     global sentinel
@@ -96,17 +103,17 @@ def bit_extract():
     s_matches = 0
     s_len = len(sentinel)
     out = bytearray()
-    
-    while(offset < len(wrapper_file)-(interval*8)):
+
+    while offset < len(wrapper_file) - (interval * 8):
         byte = 0
         for j in range(8):
             byte |= (wrapper_file[offset] & 1)
-            if(j < 7):
+            if (j < 7):
                 byte <<= 1
                 offset += interval
-        if(byte == sentinel[s_matches]):
+        if (byte == sentinel[s_matches]):
             s_matches += 1
-            if(s_matches >= s_len):
+            if (s_matches >= s_len):
                 for byte in sentinel:
                     out.append(byte)
                 return out
@@ -114,7 +121,7 @@ def bit_extract():
             s_matches = 0
             out.append(byte)
     return None
-    
+
 
 def bit_store():
     global sentinel
@@ -138,31 +145,33 @@ def bit_store():
             sentinel[i] <<= 1
             offset += interval
 
-sentinel = bytearray([0x0,0xff,0x0,0x0,0xff,0x0])
-#---------------- Arguements
+
+sentinel = bytearray([0x0, 0xff, 0x0, 0x0, 0xff, 0x0])
+# ---------------- Arguments
 store_mode = False
 bit_mode = False
 offset = 0
 interval = 1
 wrapper_file = None
 hidden_file = None
-#-----------------
+argvs = {}
+# -----------------
 
 
 if __name__ == '__main__':
     parse_args()
-    
-    if(bit_mode):
-        if(store_mode):
+
+    if (bit_mode):
+        if (store_mode):
             ""
         else:
             sys.stdout.buffer.write(bit_extract())
     else:
-        if(store_mode):
-            ""
+        if (store_mode):
+            byte_store()
         else:
             sys.stdout.buffer.write(byte_extract())
-
+            #byte_extract()
 
 """
         if(len(sentinel_matches) > 0):

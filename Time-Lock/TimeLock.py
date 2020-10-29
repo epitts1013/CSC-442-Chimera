@@ -1,5 +1,5 @@
 # IMPORTS
-import time
+from datetime import datetime
 import re
 from math import floor
 from sys import stdin
@@ -12,24 +12,28 @@ stdinEpoch = ""
 # MAIN
 # get epoch from stdin
 stdinEpoch = stdin.read()
+es = stdinEpoch.split(" ")
 
-# get current time rounded to last minute
-currentTime = time.time() - (time.time() % 60)
+epochTime = datetime(int(es[0]), int(es[1]), int(es[2]), int(es[3]), int(es[4]), int(es[5]))
+currentTime = datetime.now()
 
-# get time of inputted epoch
-epochTime = time.mktime(time.strptime(stdinEpoch, "%Y %m %d %H %M %S"))
+# debug
+epochTime = datetime(1974, 6, 1, 8, 57, 23)
+currentTime = datetime(2017, 4, 26, 15, 14, 30)
 
-# debug mode allows manual time entry
-if (DEBUG):
-    stdinEpoch = "1974 06 01 08 57 23"
-    currentTime = "2017 04 26 15 14 30"
-    currentTime = time.mktime(time.strptime(currentTime, "%Y %m %d %H %M %S"))
-    currentTime = currentTime - (currentTime % 60)
-    epochTime = time.mktime(time.strptime(stdinEpoch, "%Y %m %d %H %M %S"))
-    print(epochTime)
+# check if date is in DST
+epochDST = False
+currentDST = False
+if (epochTime.month >= 3 and epochTime.month < 9):
+    epochDST = True
+if (currentTime.month >= 3 and currentTime.month < 9):
+    currentDST = True
 
-# get time elapsed since given epoch
-elapsedTime = floor(currentTime - epochTime)
+elapsedTime = (currentTime - epochTime).total_seconds()
+elapsedTime = floor(elapsedTime - (elapsedTime % 60))
+if ((epochDST and not currentDST) or (currentDST and not epochDST)):
+    elapsedTime -= 3600
+print(elapsedTime)
 
 # compute MD5 hash
 hashedTime = md5(str(elapsedTime).encode())
