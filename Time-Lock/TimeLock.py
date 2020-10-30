@@ -18,8 +18,8 @@ epochTime = datetime(int(es[0]), int(es[1]), int(es[2]), int(es[3]), int(es[4]),
 currentTime = datetime.now()
 
 # debug
-epochTime = datetime(2017, 1, 1, 0, 0, 0)
-currentTime = datetime(2017, 3, 23, 18, 2, 6)
+# epochTime = datetime(2017, 1, 1, 0, 0, 0)
+# currentTime = datetime(2017, 3, 23, 18, 2, 6)
 
 # check if date is in DST
 epochDST = False
